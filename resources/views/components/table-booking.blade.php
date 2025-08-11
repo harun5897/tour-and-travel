@@ -23,6 +23,7 @@
                     <th class="border-2 border-gray-300 px-4 py-2 min-w-[150px]">Price</th>
                     <th class="border-2 border-gray-300 px-4 py-2 min-w-[100px]">Platform</th>
                     <th class="border-2 border-gray-300 px-4 py-2 min-w-[100px]">Status</th>
+                    <th class="border-2 border-gray-300 px-4 py-2 min-w-[100px]">Invoice</th>
                     <th class="border-2 border-gray-300 px-4 py-2 min-w-[150px]">Action</th>
                 </tr>
             </thead>
@@ -42,6 +43,12 @@
                         <td class="border-2 border-gray-300 px-4 py-2">Rp. {{ number_format($booking->price, 0, ',', '.') }}</td>
                         <td class="border-2 border-gray-300 px-4 py-2">{{ ucfirst($booking->platform) }}</td>
                         <td class="border-2 border-gray-300 px-4 py-2">{{ ucfirst($booking->status) }}</td>
+                        <td class="border-2 border-gray-300 px-4 py-2 space-x-2">
+                            <a href="{{ url('/invoice-booking/' . $booking->id) }}"
+                                class="bg-blue-500 text-white text-xs px-3 py-1 rounded hover:bg-blue-600">
+                                Print
+                            </a>
+                        </td>
                         <td class="border-2 border-gray-300 px-4 py-2 space-x-2">
                             <a href="{{ url('/detail-booking/' . $booking->id) }}"
                                 class="bg-blue-500 text-white text-xs px-3 py-1 rounded hover:bg-blue-600">

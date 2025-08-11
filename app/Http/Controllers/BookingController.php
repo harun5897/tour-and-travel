@@ -6,6 +6,7 @@ use App\Models\Sales;
 use App\Models\Package;
 use App\Models\Booking;
 use Illuminate\Http\Request;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class BookingController extends Controller
 {
@@ -46,7 +47,15 @@ class BookingController extends Controller
 
         return view('form.update-booking', compact('booking', 'sales', 'packages'));
     }
+    public function getInvoiceBooking($id) {
+        $booking = Booking::with(['sales', 'package'])->findOrFail($id);
 
+        $pdf = Pdf::loadView('pdf.bookingInvoice', [
+            'booking' => $booking
+        ])->setPaper('a4', 'portrait');
+
+        return $pdf->stream('invoice-' . $booking->booking_code . '.pdf');
+    }
     public function showFormCreateBooking() {
         $packages = Package::select('id', 'name')->get();
         $sales = Sales::select('id', 'name')->get();

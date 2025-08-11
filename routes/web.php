@@ -61,6 +61,7 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/create-booking', [BookingController::class, 'createBooking']);
     Route::delete('/delete-booking/{id}', [BookingController::class, 'deleteBooking']);
     Route::put('/update-booking/{id}', [BookingController::class, 'updateBooking']);
+    Route::get('/invoice-booking/{id}', [BookingController::class, 'getInvoiceBooking']);
 
     Route::get('/report', fn () => view('form/create-report'));
     Route::get('/create-report', [ReportController::class, 'createReport']);
