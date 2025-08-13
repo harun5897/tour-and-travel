@@ -6,11 +6,12 @@
             <div class="w-1/4">
                 @include('components.sidebar')
             </div>
-            <div class="w-full overflow-x-auto">
+            <div class="w-full overflow-x-auto h-screen">
                 @include('components.navbar', ['activeMenu' => 'Data Bookings'])
                 @include('components.alert-success')
                 @include('components.table-booking', ['bookings' => $bookings])
             </div>
         </div>
+        @stack('scripts')
     </body>
 </html>

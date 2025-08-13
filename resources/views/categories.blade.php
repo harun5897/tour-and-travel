@@ -6,11 +6,12 @@
             <div class="w-1/4">
                 @include('components.sidebar')
             </div>
-            <div class="w-full">
+            <div class="w-full overflow-x-auto h-screen">
                 @include('components.navbar', ['activeMenu' => 'Data Categories'])
                 @include('components.alert-success')
                 @include('components.table-categories', ['categories' => $categories])
             </div>
         </div>
+        @stack('scripts')
     </body>
 </html>
