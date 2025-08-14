@@ -87,6 +87,7 @@
                 <th>Description</th>
                 <th>Amount</th>
                 <th>Price</th>
+                <th>Status</th>
                 <th>SubTotal</th>
             </tr>
         </thead>
@@ -95,6 +96,7 @@
                 <td>{{ $booking->package->name ?? 'Travel Package' }}</td>
                 <td>1</td>
                 <td>Rp {{ number_format($booking->price, 0, ',', '.') }}</td>
+                <td>{{ ucfirst($booking->status) }}</td>
                 <td>Rp {{ number_format($booking->price, 0, ',', '.') }}</td>
             </tr>
         </tbody>
