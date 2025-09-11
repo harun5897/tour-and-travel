@@ -18,7 +18,7 @@
                 </tr>
             </thead>
             <tbody>
-                @forelse ($users as $index => $user)
+                @foreach ($users as $index => $user)
                     <tr class="{{ $index % 2 === 0 ? 'bg-white' : 'bg-gray-100' }}">
                         <td class="border-2 border-gray-300 px-4 py-2">{{ $index + 1 }}</td>
                         <td class="border-2 border-gray-300 px-4 py-2">{{ $user->name }}</td>
@@ -40,11 +40,7 @@
                             </form>
                         </td>
                     </tr>
-                @empty
-                    <tr>
-                        <td colspan="5" class="text-center text-gray-500 py-4">Data user not found</td>
-                    </tr>
-                @endforelse
+                @endforeach
             </tbody>
         </table>
     </div>
@@ -63,7 +59,10 @@
             paging: true,
             pageLength: 10,
             autoFill: false,
-            select: false
+            select: false,
+            language: {
+                emptyTable: "Data user not found"
+            }
         });
     });
     </script>

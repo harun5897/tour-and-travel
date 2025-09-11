@@ -8,6 +8,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\PackageController;
 use App\Http\Controllers\BookingController;
 use App\Http\Controllers\ReportController;
+use App\Http\Controllers\CriteriaController;
 
 /*
 |--------------------------------------------------------------------------
@@ -62,6 +63,8 @@ Route::middleware(['auth'])->group(function () {
     Route::delete('/delete-booking/{id}', [BookingController::class, 'deleteBooking']);
     Route::put('/update-booking/{id}', [BookingController::class, 'updateBooking']);
     Route::get('/invoice-booking/{id}', [BookingController::class, 'getInvoiceBooking']);
+
+    Route::get('/criterias', [CriteriaController::class, 'getDataCriteria']);
 
     Route::get('/report', fn () => view('form/create-report'));
     Route::get('/create-report', [ReportController::class, 'createReport']);

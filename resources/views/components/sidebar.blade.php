@@ -38,6 +38,11 @@
         Data Bookings
     </a>
     <hr class="border border-t border-gray-300">
+    <a href="/criterias"
+        class="block mx-6 my-4 text-gray-700 hover:text-blue-600 transition-colors">
+        Data Criterias
+    </a>
+    <hr class="border border-t border-gray-300">
     <a href="/report"
         class="block mx-6 my-4 text-gray-700 hover:text-blue-600 transition-colors">
         Data Report
