@@ -11,9 +11,10 @@
             <thead class="bg-gray-200 text-left text-black font-semibold">
                 <tr>
                     <th class="border-2 border-gray-300 px-4 py-2 w-[30px]">No</th>
-                    <th class="border-2 border-gray-300 px-4 py-2 min-w-[200px]">Criteria</th>
+                    <th class="border-2 border-gray-300 px-4 py-2 min-w-[100px]">Criteria</th>
                     <th class="border-2 border-gray-300 px-4 py-2 min-w-[100px]">Value</th>
-                    <th class="border-2 border-gray-300 px-4 py-2 min-w-[150px]">Action</th>
+                    <th class="border-2 border-gray-300 px-4 py-2 min-w-[100px]">Created at</th>
+                    <th class="border-2 border-gray-300 px-4 py-2 min-w-[100px]">Action</th>
                 </tr>
             </thead>
             <tbody>
@@ -22,6 +23,7 @@
                         <td class="border-2 border-gray-300 px-4 py-2">{{ $index + 1 }}</td>
                         <td class="border-2 border-gray-300 px-4 py-2">{{ $criteria->criteria }}</td>
                         <td class="border-2 border-gray-300 px-4 py-2">{{ $criteria->value }}</td>
+                        <td class="border-2 border-gray-300 px-4 py-2">{{ $criteria->created_at->format('d F Y') }}</td>
                         <td class="border-2 border-gray-300 px-4 py-2 space-x-2">
                             <a  href="{{ url('/detail-criteria/' . $criteria->id) }}"
                                 class="bg-blue-500 text-white text-xs px-3 py-1 rounded hover:bg-blue-600">

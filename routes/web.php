@@ -65,6 +65,11 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/invoice-booking/{id}', [BookingController::class, 'getInvoiceBooking']);
 
     Route::get('/criterias', [CriteriaController::class, 'getDataCriteria']);
+    Route::get('/detail-criteria/{id}', [CriteriaController::class, 'getDetailDataCriteria']);
+    Route::get('/create-criteria', fn () => view('form/create-criteria'));
+    Route::post('/create-criteria', [CriteriaController::class, 'createCriteria']);
+    Route::put('/update-criteria/{id}', [CriteriaController::class, 'updateCriteria']);
+    Route::delete('/delete-criteria/{id}', [CriteriaController::class, 'deleteCriteria']);
 
     Route::get('/report', fn () => view('form/create-report'));
     Route::get('/create-report', [ReportController::class, 'createReport']);
