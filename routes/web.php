@@ -9,6 +9,7 @@ use App\Http\Controllers\PackageController;
 use App\Http\Controllers\BookingController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\CriteriaController;
+use App\Http\Controllers\SubCriteriaController;
 
 /*
 |--------------------------------------------------------------------------
@@ -70,6 +71,8 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/create-criteria', [CriteriaController::class, 'createCriteria']);
     Route::put('/update-criteria/{id}', [CriteriaController::class, 'updateCriteria']);
     Route::delete('/delete-criteria/{id}', [CriteriaController::class, 'deleteCriteria']);
+
+    Route::get('/sub-criterias', [SubCriteriaController::class, 'getDataSubCriteria']);
 
     Route::get('/report', fn () => view('form/create-report'));
     Route::get('/create-report', [ReportController::class, 'createReport']);

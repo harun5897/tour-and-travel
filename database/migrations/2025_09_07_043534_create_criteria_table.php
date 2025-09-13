@@ -11,8 +11,8 @@ return new class extends Migration {
             $table->id();
             $table->timestamp('created_at')->nullable();
             $table->timestamp('updated_at')->nullable();
-            $table->string('criteria', 255)->comment('Nama kriteria');
-            $table->float('value')->comment('Nilai kriteria (bisa berkoma)');
+            $table->string('criteria', 255);
+            $table->float('value');
         });
     }
 
