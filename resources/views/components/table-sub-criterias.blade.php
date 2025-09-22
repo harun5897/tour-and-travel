@@ -23,7 +23,7 @@
                     <tr class="{{ $index % 2 === 0 ? 'bg-white' : 'bg-gray-100' }}">
                         <td class="border-2 border-gray-300 px-4 py-2">{{ $index + 1 }}</td>
                         <td class="border-2 border-gray-300 px-4 py-2">{{ $criteria->sub_criteria }}</td>
-                        <td class="border-2 border-gray-300 px-4 py-2">{{ $criteria->criteria }}</td>
+                        <td class="border-2 border-gray-300 px-4 py-2">{{ $criteria->criteria->criteria }}</td>
                         <td class="border-2 border-gray-300 px-4 py-2">{{ $criteria->value }}</td>
                         <td class="border-2 border-gray-300 px-4 py-2">{{ $criteria->created_at->format('d F Y') }}</td>
                         <td class="border-2 border-gray-300 px-4 py-2 space-x-2">

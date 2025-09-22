@@ -73,6 +73,11 @@ Route::middleware(['auth'])->group(function () {
     Route::delete('/delete-criteria/{id}', [CriteriaController::class, 'deleteCriteria']);
 
     Route::get('/sub-criterias', [SubCriteriaController::class, 'getDataSubCriteria']);
+    Route::get('/detail-sub-criteria/{id}', [SubCriteriaController::class, 'getDetailSubCriteria']);
+    Route::get('/create-sub-criteria', [SubCriteriaController::class, 'showFormCreateSubCriteria']);
+    Route::post('/create-sub-criteria', [SubCriteriaController::class, 'createSubCriteria']);
+    Route::put('/update-sub-criteria/{id}', [SubCriteriaController::class, 'updateSubCriteria']);
+    Route::delete('/delete-sub-criteria/{id}', [SubCriteriaController::class, 'deleteSubCriteria']);
 
     Route::get('/report', fn () => view('form/create-report'));
     Route::get('/create-report', [ReportController::class, 'createReport']);

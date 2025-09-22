@@ -7,8 +7,8 @@
                 @include('components.sidebar')
             </div>
             <div class="w-full">
-                @include('components.navbar', ['activeMenu' => 'Data Criteria'])
-                @include('components.form-create-criteria')
+                @include('components.navbar', ['activeMenu' => 'Data Sub Criteria'])
+                @include('components.form-update-subCriteria')
             </div>
         </div>
     </body>
