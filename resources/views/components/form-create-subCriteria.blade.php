@@ -7,8 +7,7 @@
             required>
             <option value="">-- Choose Criteria --</option>
             @foreach ($criterias as $criteria)
-                <option value="{{ $criteria->id }}" 
-                    {{ (old('id_criteria', $subCriteria->id_criteria) == $criteria->id) ? 'selected' : '' }}>
+                <option value="{{ $criteria->id }}" {{ old('id_criteria') == $criteria->id ? 'selected' : '' }}>
                     {{ $criteria->criteria }}
                 </option>
             @endforeach
