@@ -26,4 +26,10 @@ class Package extends Model
     public function category() {
         return $this->belongsTo(Category::class);
     }
+
+    // Relation to model scoring
+    public function scorings()
+    {
+        return $this->hasMany(Scoring::class, 'id_package');
+    }
 }

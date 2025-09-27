@@ -2,8 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Sales;
-use App\Models\Package;
 use App\Models\Booking;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
