@@ -11,6 +11,7 @@ use App\Http\Controllers\ReportController;
 use App\Http\Controllers\CriteriaController;
 use App\Http\Controllers\SubCriteriaController;
 use App\Http\Controllers\ScoringController;
+use App\Http\Controllers\DecissionController;
 
 /*
 |--------------------------------------------------------------------------
@@ -84,8 +85,10 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/detail-scoring/{id}', [ScoringController::class, 'getDetailDataScoring']);
     Route::get('/create-scoring', [ScoringController::class, 'showFormCreateScoring']);
     Route::post('/create-scoring', [ScoringController::class, 'createScoring']);
-    Route::delete('/delete-scoring/{id}', [ScoringController::class, 'deleteScoring']);
     Route::put('/update-scoring/{id}', [ScoringController::class, 'updateScoring']);
+    Route::delete('/delete-scoring/{id}', [ScoringController::class, 'deleteScoring']);
+
+    Route::get('/decission-support', fn () => view('decission-support'));
 
     Route::get('/report', fn () => view('form/create-report'));
     Route::get('/create-report', [ReportController::class, 'createReport']);
