@@ -21,4 +21,9 @@ class Criteria extends Model
         'created_at' => 'datetime',
         'updated_at' => 'datetime',
     ];
+
+    public function subCriterias()
+    {
+        return $this->hasMany(SubCriteria::class, 'id_criteria');
+    }
 }
