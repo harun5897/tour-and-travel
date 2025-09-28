@@ -51,13 +51,11 @@ class DecissionController extends Controller
         }
 
         // 3. Check if the calculation should be run
-        if ($request->input('run_calculation') === 'true' && $scorablePackages !== null) {
-            if ($scorablePackages->isNotEmpty()) {
-                $normalizedWeights = $this->normalizeWeights($criteriaForFilter);
-                $utilityParams = $this->calculateUtilityParams($criteriaForFilter, $scorablePackages);
-                $results = $this->calculateAllPackageScores($scorablePackages, $normalizedWeights, $utilityParams);
-                $this->sortResults($results);
-            }
+        if ($request->input('run_calculation') === 'true' && $scorablePackages !== null && $scorablePackages->isNotEmpty()) {
+            $normalizedWeights = $this->normalizeWeights($criteriaForFilter);
+            $utilityParams = $this->calculateUtilityParams($criteriaForFilter, $scorablePackages);
+            $results = $this->calculateAllPackageScores($scorablePackages, $normalizedWeights, $utilityParams);
+            $this->sortResults($results);
         }
 
         // 4. Return the view with the gathered data

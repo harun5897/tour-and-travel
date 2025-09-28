@@ -22,7 +22,7 @@ class UserController extends Controller
         $request->validate([
             'name'     => 'required|string|max:50',
             'email'    => 'required|email|unique:users,email',
-            'role'     => 'required|in:admin,super_admin',
+            'role'     => 'required|in:admin,super_admin,customer',
             'password' => 'required|min:6',
         ]);
 
@@ -38,7 +38,7 @@ class UserController extends Controller
         $request->validate([
             'name'     => 'required|string|max:50',
             'email' => 'required|email|unique:users,email,' . $id,
-            'role'     => 'required|in:admin,super_admin',
+            'role'     => 'required|in:admin,super_admin,customer',
             'password' => 'nullable|min:6',
         ]);
 

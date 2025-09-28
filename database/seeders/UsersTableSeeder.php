@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 
 class UsersTableSeeder extends Seeder
 {
@@ -25,7 +26,7 @@ class UsersTableSeeder extends Seeder
                 'updated_at' => '2025-09-21 21:40:07',
                 'name' => 'Jhon',
                 'email' => 'john@gmail.com',
-                'password' => '$2y$10$JASLRh/dBy7G1gN1oIOtnOpuMu5Vr4QoNPcZCy/yfpazbwMeNtC66',
+                'password' => Hash::make('password123'),
                 'role' => 'admin',
             ],
             [
@@ -34,7 +35,7 @@ class UsersTableSeeder extends Seeder
                 'updated_at' => '2025-09-21 21:40:07',
                 'name' => 'joe',
                 'email' => 'joe@example.com',
-                'password' => '$2y$10$ObOCslLQzWrDSSxGRJzU1.FO1IzjTUzh4Z9CU0Cy9TT9XsCT5WKSW',
+                'password' => Hash::make('password123'),
                 'role' => 'super_admin',
             ],
             [
@@ -43,8 +44,17 @@ class UsersTableSeeder extends Seeder
                 'updated_at' => '2025-09-21 21:40:07',
                 'name' => 'Rudi',
                 'email' => 'rudi@example.com',
-                'password' => '$2y$10$aFXo0wKya9fN1PLKwO.dde//hA96xKPyfCZxi3WF86NDh.xqz5PE.',
+                'password' => Hash::make('password123'),
                 'role' => 'admin',
+            ],
+            [
+                'id' => 4,
+                'created_at' => '2025-09-21 21:40:07',
+                'updated_at' => '2025-09-21 21:40:07',
+                'name' => 'Customer User',
+                'email' => 'customer@example.com',
+                'password' => Hash::make('password123'),
+                'role' => 'customer',
             ],
         ]);
     }

@@ -27,6 +27,7 @@
             <option value="" disabled {{ old('role') ? '' : 'selected' }}>Select role</option>
             <option value="admin" {{ old('role') === 'admin' ? 'selected' : '' }}>Admin</option>
             <option value="super_admin" {{ old('role') === 'super_admin' ? 'selected' : '' }}>Super Admin</option>
+            <option value="customer" {{ old('role') === 'customer' ? 'selected' : '' }}>Customer</option>
         </select>
         @error('role')
             <p class="text-red-500 text-sm mb-2">{{ $message }}</p>

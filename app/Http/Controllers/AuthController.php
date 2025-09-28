@@ -30,6 +30,8 @@ class AuthController extends Controller
         
         if ($user->role === 'super_admin') {
             return redirect('/user')->with('success', 'Welcome Super Admin!');
+        } elseif ($user->role === 'customer') {
+            return redirect('/decision-support')->with('success', 'Welcome Customer!');
         } else {
             return redirect('/sales')->with('success', 'Welcome Admin!');
         }

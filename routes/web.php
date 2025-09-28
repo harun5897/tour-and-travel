@@ -37,7 +37,7 @@ Route::middleware(['auth', 'super_admin'])->group(function () {
     Route::delete('/delete-user/{id}', [UserController::class, 'deleteUser']);
 });
 
-Route::middleware(['auth'])->group(function () {
+Route::middleware(['auth', 'role:super_admin,admin'])->group(function () {
     Route::get('/sales', [SalesController::class, 'getDataSales']);
     Route::get('/detail-sales/{id}', [SalesController::class, 'getDetailDataSales']);
     Route::post('/create-sales', [SalesController::class, 'createSales']);
@@ -88,8 +88,10 @@ Route::middleware(['auth'])->group(function () {
     Route::put('/update-scoring/{id}', [ScoringController::class, 'updateScoring']);
     Route::delete('/delete-scoring/{id}', [ScoringController::class, 'deleteScoring']);
 
-    Route::get('/decision-support', [DecissionController::class, 'calculateSMART']);
-
     Route::get('/report', fn () => view('form/create-report'));
     Route::get('/create-report', [ReportController::class, 'createReport']);
+});
+
+Route::middleware(['auth', 'role:customer,super_admin'])->group(function () {
+    Route::get('/decision-support', [DecissionController::class, 'calculateSMART']);
 });

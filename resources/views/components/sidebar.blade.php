@@ -18,6 +18,7 @@
     </a>
     <hr class="border border-t border-gray-300">
     @endif
+    @if(Auth::user() && (Auth::user()->role === 'super_admin' || Auth::user()->role === 'admin'))
     <a href="/sales"
         class="block mx-6 my-4 text-gray-700 hover:text-blue-600 transition-colors">
         Data Sales
@@ -38,6 +39,13 @@
         Data Bookings
     </a>
     <hr class="border border-t border-gray-300">
+    <a href="/report"
+        class="block mx-6 my-4 text-gray-700 hover:text-blue-600 transition-colors">
+        Data Report
+    </a>
+    <hr class="border border-t border-gray-300">
+    @endif
+    @if(Auth::user() && Auth::user()->role === 'super_admin')
     <a href="/criterias"
         class="block mx-6 my-4 text-gray-700 hover:text-blue-600 transition-colors">
         Data Criterias
@@ -53,14 +61,12 @@
         Data Scorings
     </a>
     <hr class="border border-t border-gray-300">
+    @endif
+    @if(Auth::user() && (Auth::user()->role === 'super_admin' || Auth::user()->role === 'customer'))
     <a href="/decision-support"
         class="block mx-6 my-4 text-gray-700 hover:text-blue-600 transition-colors">
         Decission Support
     </a>
     <hr class="border border-t border-gray-300">
-    <a href="/report"
-        class="block mx-6 my-4 text-gray-700 hover:text-blue-600 transition-colors">
-        Data Report
-    </a>
-    <hr class="border border-t border-gray-300">
+    @endif
 </div>
