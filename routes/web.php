@@ -88,7 +88,7 @@ Route::middleware(['auth'])->group(function () {
     Route::put('/update-scoring/{id}', [ScoringController::class, 'updateScoring']);
     Route::delete('/delete-scoring/{id}', [ScoringController::class, 'deleteScoring']);
 
-    Route::get('/decission-support', fn () => view('decission-support'));
+    Route::get('/decision-support', [DecissionController::class, 'calculateSMART']);
 
     Route::get('/report', fn () => view('form/create-report'));
     Route::get('/create-report', [ReportController::class, 'createReport']);
