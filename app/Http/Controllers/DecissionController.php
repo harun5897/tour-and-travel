@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Models\Category;
 use App\Models\Criteria;
 use App\Models\Package;
-use App\Models\SubCriteria;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 
@@ -13,32 +12,62 @@ class DecissionController extends Controller
 {
     public function calculateSMART(Request $request)
     {
-        // 1. Initial Data Fetching
-        $allPackages = Package::with('scorings.subCriteria.criteria', 'category')->get();
+        // 1. Always fetch data for filters
         $criteriaForFilter = Criteria::with('subCriterias')->get();
-        $categoryOptions = Category::all(); // Re-add category options for the filter
+        $categoryOptions = Category::all();
 
-        // 2. Core Logic
-        $normalizedWeights = $this->normalizeWeights($criteriaForFilter);
-        $scorablePackages = $this->getFilteredPackages($request, $allPackages, $criteriaForFilter->count());
+        // Initialize variables
+        $scorablePackages = null;
+        $results = [];
+        $normalizedWeights = [];
 
-        // 3. Handle Empty Results
-        if ($scorablePackages->isEmpty()) {
-            return $this->handleEmptyResults($request, $criteriaForFilter, $categoryOptions, $normalizedWeights);
+        // 2. Check if any filters are applied to fetch packages
+        if ($request->has('category_filter') || $request->has('filter_criteria_id')) {
+            $allPackages = Package::with('scorings.subCriteria.criteria', 'category')->get();
+            $totalCriteriaCount = $criteriaForFilter->count();
+            
+            // Filter packages that have complete scoring
+            $scorablePackages = $allPackages->filter(function ($package) use ($totalCriteriaCount) {
+                return $package->scorings->count() >= $totalCriteriaCount;
+            });
+
+            // Apply category filter if present
+            if ($request->filled('category_filter')) {
+                $scorablePackages = $scorablePackages->filter(function ($package) use ($request) {
+                    return $package->category_id == $request->input('category_filter');
+                });
+            }
+            
+            // Apply dynamic criteria filter if present
+            $filterCriteriaId = $request->input('filter_criteria_id');
+            $filterSubCriteriaId = $request->input('filter_sub_criteria_id');
+            if ($filterCriteriaId && $filterSubCriteriaId) {
+                $scorablePackages = $scorablePackages->filter(function ($package) use ($filterCriteriaId, $filterSubCriteriaId) {
+                    return $package->scorings->contains(function ($scoring) use ($filterCriteriaId, $filterSubCriteriaId) {
+                        return $scoring->id_criteria == $filterCriteriaId && $scoring->id_sub_criteria == $filterSubCriteriaId;
+                    });
+                });
+            }
         }
 
-        // 4. Perform SMART Calculation
-        $utilityParams = $this->calculateUtilityParams($criteriaForFilter);
-        $results = $this->calculateAllPackageScores($scorablePackages, $normalizedWeights, $utilityParams);
-        $this->sortResults($results);
+        // 3. Check if the calculation should be run
+        if ($request->input('run_calculation') === 'true' && $scorablePackages !== null) {
+            if ($scorablePackages->isNotEmpty()) {
+                $normalizedWeights = $this->normalizeWeights($criteriaForFilter);
+                $utilityParams = $this->calculateUtilityParams($criteriaForFilter, $scorablePackages);
+                $results = $this->calculateAllPackageScores($scorablePackages, $normalizedWeights, $utilityParams);
+                $this->sortResults($results);
+            }
+        }
 
-        // 5. Return View
+        // 4. Return the view with the gathered data
         return view('decission-support', [
-            'normalizedWeights' => $normalizedWeights,
+            'scorablePackages' => $scorablePackages,
             'results' => $results,
-            'criterias' => $criteriaForFilter,
+            'normalizedWeights' => $normalizedWeights,
             'criteriaForFilter' => $criteriaForFilter,
-            'categoryOptions' => $categoryOptions, // Pass categories to the view
+            'categoryOptions' => $categoryOptions,
+            'criterias' => $criteriaForFilter,
         ]);
     }
 
@@ -54,55 +83,26 @@ class DecissionController extends Controller
         });
     }
 
-    private function getFilteredPackages(Request $request, Collection $packages, int $totalCriteriaCount): Collection
-    {
-        $scorablePackages = $packages->filter(fn($package) => $package->scorings->count() >= $totalCriteriaCount);
-
-        // Dynamic criteria filter
-        $filterCriteriaId = $request->input('filter_criteria_id');
-        $filterSubCriteriaId = $request->input('filter_sub_criteria_id');
-        if ($filterCriteriaId && $filterSubCriteriaId) {
-            $scorablePackages = $scorablePackages->filter(function ($package) use ($filterCriteriaId, $filterSubCriteriaId) {
-                return $package->scorings->contains(fn($scoring) =>
-                    $scoring->id_criteria == $filterCriteriaId && $scoring->id_sub_criteria == $filterSubCriteriaId
-                );
-            });
-        }
-
-        // Static category filter
-        $categoryFilter = $request->input('category_filter');
-        if ($categoryFilter) {
-            $scorablePackages = $scorablePackages->filter(fn($package) => $package->category_id == $categoryFilter);
-        }
-
-        return $scorablePackages;
-    }
-
-    private function handleEmptyResults(Request $request, Collection $criteriaForFilter, Collection $categoryOptions, Collection $normalizedWeights)
-    {
-        $hasFilters = $request->filled('filter_criteria_id') || $request->filled('category_filter');
-        $errorMessage = $hasFilters
-            ? 'No packages found matching the selected filters.'
-            : 'No packages with complete scoring data found.';
-
-        return view('decission-support', [
-            'error' => $errorMessage,
-            'criteriaForFilter' => $criteriaForFilter,
-            'categoryOptions' => $categoryOptions,
-            'results' => [],
-            'criterias' => $criteriaForFilter,
-            'normalizedWeights' => $normalizedWeights,
-        ]);
-    }
-
-    private function calculateUtilityParams(Collection $criterias): array
+    private function calculateUtilityParams(Collection $criterias, Collection $scorablePackages): array
     {
         $utilityParams = [];
         foreach ($criterias as $criteria) {
-            $utilityParams[$criteria->id] = [
-                'cmin' => (float) $criteria->subCriterias->min('value'),
-                'cmax' => (float) $criteria->subCriterias->max('value'),
-            ];
+            $scoresForCriterion = $scorablePackages->map(function ($package) use ($criteria) {
+                $scoring = $package->scorings->where('id_criteria', $criteria->id)->first();
+                return $scoring && $scoring->subCriteria ? (float) $scoring->subCriteria->value : null;
+            })->filter();
+
+            if ($scoresForCriterion->isNotEmpty()) {
+                $utilityParams[$criteria->id] = [
+                    'cmin' => $scoresForCriterion->min(),
+                    'cmax' => $scoresForCriterion->max(),
+                ];
+            } else {
+                $utilityParams[$criteria->id] = [
+                    'cmin' => 0,
+                    'cmax' => 0,
+                ];
+            }
         }
         return $utilityParams;
     }

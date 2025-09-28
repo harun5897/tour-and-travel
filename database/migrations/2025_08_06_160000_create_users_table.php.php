@@ -14,7 +14,7 @@ return new class extends Migration {
             $table->string('name', 255);
             $table->string('email', 255)->unique();
             $table->string('password', 255);
-            $table->enum('role', ['super_admin', 'admin'])->nullable();
+            $table->enum('role', ['super_admin', 'admin', 'customer'])->nullable();
         });
     }
 
